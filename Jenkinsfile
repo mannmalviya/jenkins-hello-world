@@ -1,16 +1,28 @@
- pipeline {
+  pipeline {
       agent any
       stages {
-          stage('Deploy') {
+          stage('Test') {
               steps {
-                  retry(3) {
-                      sh './flakey-deploy.sh'
-                  }   
-                  timeout(time: 3, unit: 'MINUTES') {
-                      sh './health-check.sh'
-                  }   
-              }   
-          }   
-      }   
-  }   
+                  sh 'echo "Fail!"; exit 1'
+              }
+          }
+      }
+      post {
+          always {
+              echo 'This will always run'
+          }
+          success {
+              echo 'This will run only if successful'
+          }
+          failure {
+              echo 'This will run only if failed'
+          }
+          unstable {
+              echo 'This will run only if the run was marked unstable'
+          }
+          changed {
+              echo 'This will run only if the state of the Pipeline has changed'
+          }
+      }
+  }
 
