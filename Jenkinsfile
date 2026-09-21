@@ -1,28 +1,12 @@
-  pipeline {
-      agent any
+  pipeline {                                                                                                     
+      agent {
+          docker { image 'node:24.21.0-alpine3.24' }
+      }   
       stages {
           stage('Test') {
               steps {
-                  sh 'echo "Fail!"; exit 1'
-              }
-          }
-      }
-      post {
-          always {
-              echo 'This will always run'
-          }
-          success {
-              echo 'This will run only if successful'
-          }
-          failure {
-              echo 'This will run only if failed'
-          }
-          unstable {
-              echo 'This will run only if the run was marked unstable'
-          }
-          changed {
-              echo 'This will run only if the state of the Pipeline has changed'
-          }
-      }
+                  sh 'node --eval "console.log(process.arch,process.platform)"'
+              }   
+          }   
+      }   
   }
-
